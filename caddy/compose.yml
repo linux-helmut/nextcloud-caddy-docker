@@ -1,0 +1,29 @@
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+
+    networks:
+      nextcloud:
+
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"
+      - "443:443/udp"
+
+    volumes:
+      - /docker/caddy/caddyfile:/etc/caddy/Caddyfile
+      - /docker/caddy/data:/data/caddy
+      - /docker/caddy/config:/config/caddy
+      - /docker/nextcloud/html:/var/www/nextcloud:ro
+
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+
+    restart: unless-stopped
+
+networks:
+  nextcloud:
+    external: true
+    
