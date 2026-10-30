@@ -8,16 +8,17 @@ Each service has its own Docker Compose configuration and can be managed indepen
 
 ## Architecture
 
-The planned infrastructure consists of the following components:
+The infrastructure consists of the following components:
 
 | Component | Description |
 |---|---|
 | Caddy | Reverse proxy, automatic HTTPS and TLS certificate management |
-| PHP-FPM | PHP runtime environment for Nextcloud |
+| PHP-FPM | Custom PHP runtime environment for Nextcloud |
 | Nextcloud | Manually installed Nextcloud application |
 | MariaDB | Database backend |
 | Redis | Caching and transactional file locking |
-| Docker Network | Shared bridge network with IPv4 and IPv6 support |
+| Euro-Office | Online document editing and collaboration |
+| Docker Network | Dedicated bridge network with IPv4 and IPv6 support |
 
 All containers communicate through a dedicated Docker bridge network.
 
@@ -54,12 +55,21 @@ nextcloud-caddy-docker/
 │   ├── update.sh
 │   └── restart.sh
 │
+├── nextcloud/
+│   ├── compose.yml
+│   ├── start.sh
+│   ├── update.sh
+│   ├── load_latest_nextcloud.sh
+│   ├── configure_apps.sh
+│   └── wartung.sh
+│
+├── euro-office/
+│   ├── compose.yml
+│   ├── start.sh
+│   └── update.sh
+│
 ├── caddy/                 # Planned
-│
 ├── php-fpm/               # Planned
-│
-├── nextcloud/             # Planned
-│
 ├── docs/                  # Planned
 │
 ├── README.md
@@ -70,7 +80,7 @@ nextcloud-caddy-docker/
 
 ### 1. Docker Network
 
-Creates a dedicated Docker bridge network for communication between the containers.
+Creates a dedicated Docker bridge network for communication between the individual containers.
 
 Features:
 
@@ -83,15 +93,18 @@ Files:
 
 | File | Description |
 |---|---|
-| `network/create.sh` | Creates the Docker bridge network with IPv4 and IPv6 support |
+| `create.sh` | Creates the Docker bridge network with IPv4 and IPv6 support |
 
-Network name: `nextcloud`
+Network configuration:
 
-Bridge interface: `br_nextcloud`
-
-IPv4 subnet: `172.30.0.0/16`
-
-IPv6 subnet: `fd00:172:30::/64`
+| Setting | Value |
+|---|---|
+| Network name | `nextcloud` |
+| Bridge interface | `br_nextcloud` |
+| IPv4 subnet | `172.30.0.0/16` |
+| IPv4 gateway | `172.30.0.1` |
+| IPv6 subnet | `fd00:172:30::/64` |
+| IPv6 gateway | `fd00:172:30::1` |
 
 Make sure the selected network ranges do not overlap with existing networks or VPN connections.
 
@@ -147,31 +160,86 @@ Files:
 | `update.sh` | Pulls the latest image and recreates the container |
 | `restart.sh` | Recreates the Redis container after configuration changes |
 
-### 4. PHP-FPM
+### 4. Nextcloud PHP-FPM
 
-PHP-FPM provides the PHP runtime environment for Nextcloud.
+Provides the PHP-FPM runtime environment for the manually installed Nextcloud application.
 
-A custom Docker image is built using a dedicated Dockerfile.
+The container uses a custom Docker image and separate configuration directories for PHP CLI and PHP-FPM.
 
-Planned features:
+Features:
 
 - Custom PHP-FPM Docker image
-- PHP extensions required by Nextcloud
-- Separate CLI and FPM configurations
-- Custom PHP-FPM pool configuration
-- Configurable PHP memory and execution limits
+- PHP 8.4
+- Separate CLI and FPM configuration
+- Persistent Nextcloud application directory
+- Separate Nextcloud data directory
+- Dedicated Docker network
 
-### 5. Nextcloud
+Files:
+
+| File | Description |
+|---|---|
+| `compose.yml` | Nextcloud PHP-FPM Docker Compose configuration |
+| `start.sh` | Creates and starts the PHP-FPM container |
+| `update.sh` | Pulls the custom image and recreates the container |
+
+### 5. Nextcloud Installation and Maintenance
 
 Nextcloud is installed manually inside the PHP-FPM container's web directory.
 
 No prebuilt Nextcloud application image is required.
 
-The application files are maintained separately from the PHP runtime environment.
-
 This allows Nextcloud to be installed and updated independently of the PHP-FPM Docker image.
 
-### 6. Caddy
+Files:
+
+| File | Description |
+|---|---|
+| `load_latest_nextcloud.sh` | Downloads and extracts the latest Nextcloud release and sets file ownership |
+| `configure_apps.sh` | Installs, configures or disables selected Nextcloud apps using OCC commands |
+| `wartung.sh` | Runs Nextcloud maintenance tasks and creates detailed log files |
+
+The app configuration script provides a collection of optional OCC commands. Administrators can selectively enable commands to install additional apps or disable unwanted apps.
+
+The maintenance script includes tasks such as:
+
+- Preview cleanup
+- File cleanup
+- File tree repair
+- Maintenance repair
+- Trashbin cleanup
+- App data scanning
+- Database index checks
+
+A full file scan can optionally be enabled when required.
+
+### 6. Euro-Office
+
+Euro-Office provides online document editing and collaboration for Nextcloud.
+
+The document server runs in a separate Docker container and communicates with Nextcloud through the dedicated Docker network.
+
+Features:
+
+- Euro-Office Document Server
+- JWT authentication
+- Persistent document storage
+- Separate private data directory
+- Integration with Nextcloud
+
+Files:
+
+| File | Description |
+|---|---|
+| `compose.yml` | Euro-Office Docker Compose configuration |
+| `start.sh` | Creates and starts the Euro-Office container |
+| `update.sh` | Pulls the latest image and recreates the container |
+
+Container image:
+
+`ghcr.io/euro-office/documentserver:latest`
+
+### 7. Caddy
 
 Caddy acts as the reverse proxy for the Nextcloud installation.
 
@@ -181,7 +249,7 @@ Planned features:
 - Automatic TLS certificate management
 - Reverse proxy configuration for PHP-FPM
 - HTTP/3 support
-- Separate persistent configuration and certificate storage
+- Persistent configuration and certificate storage
 
 ## Installation
 
@@ -193,9 +261,10 @@ The installation guide will cover the following steps:
 4. Configure and start Redis.
 5. Build and start the custom PHP-FPM image.
 6. Install Nextcloud manually.
-7. Configure Caddy as reverse proxy.
-8. Configure Nextcloud database access and Redis caching.
-9. Complete the Nextcloud installation and verify the system.
+7. Configure Nextcloud apps and maintenance tasks.
+8. Configure Caddy as reverse proxy.
+9. Install and configure Euro-Office.
+10. Complete the Nextcloud configuration and verify the system.
 
 Detailed installation instructions will be added as the project develops.
 
@@ -203,14 +272,15 @@ Detailed installation instructions will be added as the project develops.
 
 Each Docker service is managed independently using its own Docker Compose configuration and shell scripts.
 
-The project will include procedures for:
+The project includes procedures for:
 
-- Starting and stopping individual services
+- Starting individual services
 - Updating Docker images
 - Recreating containers after configuration changes
-- Updating Nextcloud manually
+- Installing and updating Nextcloud manually
+- Managing Nextcloud apps
+- Running OCC maintenance tasks
 - Database maintenance
-- Backup and recovery
 
 ## Security
 
@@ -224,14 +294,15 @@ Important security considerations:
 - Secrets and passwords must not be committed to the repository.
 - Docker images should be kept up to date.
 - External storage permissions must be configured carefully.
+- Euro-Office JWT authentication must use a strong, individual secret.
 
-## License
+## Third-Party Software and Licenses
 
-The original scripts, Docker configurations and documentation are intended to be released under the MIT License.
+The project's original scripts, Docker configurations and documentation are intended to be released under the MIT License.
 
 Third-party software, Docker images and included components remain subject to their respective licenses and copyright notices.
 
-See the individual projects for further licensing information.
+The licenses of all external components must be respected.
 
 ## Project Status
 
