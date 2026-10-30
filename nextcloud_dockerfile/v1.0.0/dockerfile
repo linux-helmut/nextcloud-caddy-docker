@@ -34,8 +34,17 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-COPY node /usr/bin/node
-RUN chmod +x /usr/bin/node
+# Install latest Node.js 26.x
+RUN set -eu; \
+    NODE_VERSION=$(curl -fsSL https://nodejs.org/dist/index.json \
+        | grep -m1 -E '"version"[[:space:]]*:[[:space:]]*"v26\.' \
+        | sed -E 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/'); \
+    NODE_FILE="node-${NODE_VERSION}-linux-x64.tar.xz"; \
+    curl -fsSLO "https://nodejs.org/dist/${NODE_VERSION}/${NODE_FILE}"; \
+    curl -fsSLO "https://nodejs.org/dist/${NODE_VERSION}/SHASUMS256.txt"; \
+    grep " ${NODE_FILE}$" SHASUMS256.txt | sha256sum -c -; \
+    tar -xJf "${NODE_FILE}" -C /usr/local --strip-components=1; \
+    rm -f "${NODE_FILE}" SHASUMS256.txt
 
 COPY run.sh /run.sh
 RUN chmod +x /run.sh
