@@ -1,0 +1,25 @@
+services:
+  mariadb:
+    image: mariadb:11.8
+    container_name: mariadb
+
+    command:
+      - mariadbd
+      - --defaults-file=/etc/mysql/mariadb.cnf
+
+    networks:
+      nextcloud:
+
+    environment:
+      TZ: Europe/Berlin
+
+    volumes:
+      - /docker/mariadb/db:/var/lib/mysql
+      - /docker/mariadb/mariadb.cnf:/etc/mysql/mariadb.cnf:ro
+
+    restart: unless-stopped
+
+networks:
+  nextcloud:
+    external: true
+    
