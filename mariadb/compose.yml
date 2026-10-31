@@ -12,7 +12,8 @@ services:
 
     environment:
       TZ: Europe/Berlin
-
+      MARIADB_ROOT_PASSWORD: "root"
+      
     volumes:
       - /docker/mariadb/db:/var/lib/mysql
       - /docker/mariadb/mariadb.cnf:/etc/mysql/mariadb.cnf:ro
