@@ -8,8 +8,9 @@ GRANT ALL PRIVILEGES ON nextcloud.* TO 'nextcloud'@'%';
 FLUSH PRIVILEGES;
 "
 
-docker exec -it mariadb mariadb-secure-installation
+#docker exec -it mariadb mariadb-secure-installation
 docker exec -i mariadb mariadb-secure-installation <<'EOF'
+
 n
 n
 y
