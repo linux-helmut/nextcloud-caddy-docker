@@ -6,7 +6,12 @@ mv /docker/nextcloud/nextcloud /docker/nextcloud/html
 chown www-data:www-data /docker/nextcloud/html -R
 rm latest.zip
 
-mv /docker/nextcloud/vorgaben.config.php /docker/nextcloud/html/config
-mv /docker/nextcloud/autoconfig.php /docker/nextcloud/html/config
+mv /docker/nextcloud/example/vorgaben.config.php /docker/nextcloud/html/config
+mv /docker/nextcloud/example/autoconfig.php /docker/nextcloud/html/config
+
+mkdir data
+chown www-data:www-data data
+chmod 0770 data
+
 
 exit

@@ -49,7 +49,7 @@ RUN set -eu; \
     tar -xJf "${NODE_FILE}" -C /usr/local --strip-components=1; \
     rm -f "${NODE_FILE}" SHASUMS256.txt node-index.json
 
-COPY run.sh /run.sh
+COPY example/run.sh /run.sh
 RUN chmod +x /run.sh
 
 CMD ["/run.sh"]
