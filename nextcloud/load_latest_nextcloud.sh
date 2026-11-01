@@ -5,5 +5,6 @@ unzip latest.zip -d /docker/nextcloud
 mv /docker/nextcloud/nextcloud /docker/nextcloud/html
 chown www-data:www-data /docker/nextcloud/html -R
 rm latest.zip
+mv /docker/nextcloud/vorgaben.config.php /docker/nextcloud/html/config
 
 exit
