@@ -5,7 +5,8 @@ services:
 
     networks:
       nextcloud:
-
+        aliases:
+          - nextcloud.domain.de
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
