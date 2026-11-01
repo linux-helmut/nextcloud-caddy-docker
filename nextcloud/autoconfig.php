@@ -1,0 +1,10 @@
+<?php
+$AUTOCONFIG = [
+    'dbtype'        => 'mysql',
+    'dbname'        => 'nextcloud',
+    'dbuser'        => 'nextcloud',
+    'dbpass'        => 'nextcloud',
+    'dbhost'        => 'mariadb:3306',
+    'dbtableprefix' => 'oc_',
+    'directory'     => '/var/www/data',
+];

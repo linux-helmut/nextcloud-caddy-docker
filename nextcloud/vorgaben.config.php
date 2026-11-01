@@ -31,14 +31,6 @@ $CONFIG = array (
   'filesystem_check_changes' => 1,
   'simpleSignUpLink.shown' => false,
 
-  'dbtype' => 'mysql',
-  'dbname' => 'nextcloud',
-  'dbhost' => 'mariadb:3306',
-  'dbtableprefix' => 'oc_',
-  'mysql.utf8mb4' => true,
-  'dbuser' => 'nextcloud',
-  'dbpassword' => 'nextcloud',
-
   'default_language' => 'de_DE',
   'knowledgebaseenabled' => false,
   'auth.webauthn.enabled' => false,
