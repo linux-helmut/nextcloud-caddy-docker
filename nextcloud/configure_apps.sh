@@ -17,7 +17,7 @@ docker exec -it nextcloud php /var/www/nextcloud/occ app:install theming_customc
 docker exec -it nextcloud php /var/www/nextcloud/occ app:install files_external
 docker exec -it nextcloud php /var/www/nextcloud/occ app:install files_linkeditor
 #docker exec -it nextcloud php /var/www/nextcloud/occ app:install maps
-docker exec -it nextcloud php /var/www/nextcloud/occ app:install metadata
+#docker exec -it nextcloud php /var/www/nextcloud/occ app:install metadata
 #docker exec -it nextcloud php /var/www/nextcloud/occ app:install music
 docker exec -it nextcloud php /var/www/nextcloud/occ app:install files_photospheres
 docker exec -it nextcloud php /var/www/nextcloud/occ app:install notify_push
