@@ -37,7 +37,7 @@ $CONFIG = array (
   'dbtableprefix' => 'oc_',
   'mysql.utf8mb4' => true,
   'dbuser' => 'nextcloud',
-  'dbpassword' => 'EIN_STARKES_PASSWORT',
+  'dbpassword' => 'nextcloud',
 
   'default_language' => 'de_DE',
   'knowledgebaseenabled' => false,
