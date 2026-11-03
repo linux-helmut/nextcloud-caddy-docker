@@ -22,8 +22,6 @@ docker run -d \
 -p 9000:9000 \
 portainer/portainer-ce:latest
 
-docker logs portainer | grep "secret"
-
 
 cd /docker/redis
 docker compose up -d redis
@@ -57,5 +55,7 @@ docker compose up -d nextcloud
 
 cd /docker/caddy
 docker compose up -d caddy
+
+docker logs portainer | grep "secret"
 
 exit
