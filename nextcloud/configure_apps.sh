@@ -21,6 +21,7 @@ docker exec -it nextcloud php /var/www/nextcloud/occ app:install files_linkedito
 #docker exec -it nextcloud php /var/www/nextcloud/occ app:install music
 docker exec -it nextcloud php /var/www/nextcloud/occ app:install files_photospheres
 docker exec -it nextcloud php /var/www/nextcloud/occ app:install notify_push
+docker exec -it nextcloud php /var/www/nextcloud/occ app:install extended_occweb
 
 docker exec -it nextcloud php /var/www/nextcloud/occ app:disable comments
 docker exec -it nextcloud php /var/www/nextcloud/occ app:disable dashboard
@@ -41,5 +42,6 @@ docker exec -it nextcloud php /var/www/nextcloud/occ app:disable files_versions
 docker exec -it nextcloud php /var/www/nextcloud/occ app:disable user_status
 docker exec -it nextcloud php /var/www/nextcloud/occ app:disable survey_client
 docker exec -it nextcloud php /var/www/nextcloud/occ app:disable circles
+docker exec -it nextcloud php /var/www/nextcloud/occ app:disable office
 
 exit
