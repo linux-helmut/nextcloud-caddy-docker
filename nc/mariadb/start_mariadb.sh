@@ -1,5 +1,6 @@
 #!/bin/bash
+set -e
 
-docker compose up -d nc_mariadb
+docker compose --env-file /docker/nc/config.env up -d nc_mariadb
 
-exit
+exit 0

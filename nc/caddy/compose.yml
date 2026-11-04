@@ -1,12 +1,16 @@
 services:
   nc_caddy:
+    env_file:
+      - /docker/nc/config.env
+
     image: caddy:latest
     container_name: nc_caddy
 
     networks:
       nextcloud:
         aliases:
-          - cloud.lokal.de
+          - ${NC_DOMAIN}
+
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
@@ -26,5 +30,5 @@ services:
 
 networks:
   nextcloud:
+    name: ${DOCKER_NETWORK}
     external: true
-    

@@ -1,6 +1,7 @@
 #!/bin/bash
+set -e
 
-docker compose pull nc_redis
-docker compose up -d nc_redis
+docker compose --env-file /docker/nc/config.env pull nc_redis
+docker compose --env-file /docker/nc/config.env up -d nc_redis
 
-exit
+exit 0

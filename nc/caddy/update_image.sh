@@ -1,6 +1,7 @@
 #!/bin/bash
+set -e
 
-docker compose pull nc_caddy
-docker compose up -d nc_caddy
+docker compose --env-file /docker/nc/config.env pull nc_caddy
+docker compose --env-file /docker/nc/config.env up -d nc_caddy
 
-exit
+exit 0

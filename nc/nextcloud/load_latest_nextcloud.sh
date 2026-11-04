@@ -1,19 +1,47 @@
 #!/bin/bash
+set -e
 
-wget https://download.nextcloud.com/server/releases/latest.zip
-unzip latest.zip -d /docker/nc/temp
-mv /docker/nc/temp/nextcloud /docker/nc/nextcloud/html
-rmdir /docker/nc/temp
-#rm latest.zip
+# Verzeichnisse
+BASE_DIR="/docker/nc/nextcloud"
+TEMP_DIR="/docker/nc/temp"
+HTML_DIR="$BASE_DIR/html"
+DATA_DIR="$BASE_DIR/data"
 
-cp /docker/nc/nextcloud/example/vorgaben.config.php /docker/nc/nextcloud/html/config/vorgaben.config.php
-cp /docker/nc/nextcloud/example/autoconfig.php /docker/nc/nextcloud/html/config/autoconfig.php
+cd "$BASE_DIR"
 
-chown www-data:www-data /docker/nc/nextcloud/html -R
+# Prüfen, ob bereits eine Installation existiert
+if [ -e "$HTML_DIR" ]; then
+    echo "Nextcloud-Verzeichnis existiert bereits: $HTML_DIR"
+    echo "Installation wird abgebrochen."
+    exit 1
+fi
 
-mkdir /docker/nc/nextcloud/data
-chown www-data:www-data /docker/nc/nextcloud/data
-chmod 0770 /docker/nc/nextcloud/data
+# Aktuelle Nextcloud-Version herunterladen
+wget -O latest.zip https://download.nextcloud.com/server/releases/latest.zip
 
+# Archiv entpacken
+mkdir -p "$TEMP_DIR"
+unzip -q latest.zip -d "$TEMP_DIR"
 
-exit
+# Nextcloud installieren
+mv "$TEMP_DIR/nextcloud" "$HTML_DIR"
+rmdir "$TEMP_DIR"
+
+# Konfigurationsvorlagen kopieren
+cp "$BASE_DIR/example/vorgaben.config.php" \
+   "$HTML_DIR/config/vorgaben.config.php"
+
+cp "$BASE_DIR/example/autoconfig.php" \
+   "$HTML_DIR/config/autoconfig.php"
+
+# Berechtigungen setzen
+chown -R www-data:www-data "$HTML_DIR"
+
+# Datenverzeichnis erstellen
+mkdir -p "$DATA_DIR"
+chown www-data:www-data "$DATA_DIR"
+chmod 0770 "$DATA_DIR"
+
+echo "Nextcloud wurde erfolgreich bereitgestellt."
+
+exit 0

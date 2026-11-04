@@ -1,42 +1,46 @@
 <?php
+
 $CONFIG = array (
 
-  'serverid' => '5',
+  'serverid' => getenv('NC_SERVER_ID'),
 
   'trusted_proxies' =>
   array (
-    0 => '172.30.0.0/16',
+    0 => getenv('DOCKER_IPV4_SUBNET'),
+    1 => getenv('DOCKER_IPV6_SUBNET'),
     1 => '127.0.0.1',
     2 => '::1',
   ),
 
   'notify_push' =>
   array (
-    'url' => 'https://cloud.lokal.de/push',
+    'url' => 'https://' . getenv('NC_DOMAIN') . '/push',
   ),
 
   'overwriteprotocol' => 'https',
-  'overwrite.cli.url' => 'https://cloud.lokal.de',
-  'overwritehost' => 'cloud.lokal.de',
+  'overwrite.cli.url' => 'https://' . getenv('NC_DOMAIN'),
+  'overwritehost' => getenv('NC_DOMAIN'),
   'overwritewebroot' => '/',
 
-  'datadirectory' => '/var/www/data',
+  'datadirectory' => getenv('NC_DATA_DIR'),
 
-  'logtimezone' => 'Europe/Berlin',
+  'logtimezone' => getenv('TZ'),
   'log_type' => 'file',
   'loglevel' => 3,
   'log_rotate_size' => '10485760',
-  'logfile' => '/var/www/data/nextcloud.log',
+  'logfile' => getenv('NC_DATA_DIR') . '/nextcloud.log',
 
   'filesystem_check_changes' => 1,
   'simpleSignUpLink.shown' => false,
 
-  'default_language' => 'de_DE',
-  'knowledgebaseenabled' => false,
-  'auth.webauthn.enabled' => false,
-  'lost_password_link' => 'disabled',
-  'default_phone_region' => 'DE',
+  'default_language' => getenv('NC_DEFAULT_LANGUAGE'),
+  'knowledgebaseenabled' => getenv('NC_KNOWLEDGEBASE_ENABLED') === 'true',
+  'auth.webauthn.enabled' => getenv('NC_WEBAUTHN_ENABLED') === 'true',
+  'lost_password_link' => getenv('NC_LOST_PASSWORD_LINK'),
+  'default_phone_region' => getenv('NC_DEFAULT_PHONE_REGION'),
+
   'maintenance_window_start' => 1,
+
   'twofactor_enforced' => 'true',
   'twofactor_enforced_groups' =>
   array (
@@ -45,17 +49,19 @@ $CONFIG = array (
   array (
     0 => 'admin',
   ),
+
   'activity_use_cached_mountpoints' => true,
-  
-  'mail_smtpmode' => 'smtp',
+
+  // SMTP
+  'mail_smtpmode' => getenv('NC_MAIL_MODE'),
   'mail_sendmailmode' => 'smtp',
-  'mail_from_address' => 'nextcloud',
-  'mail_domain' => 'domain.de',
-  'mail_smtphost' => 'mail.domain.de',
-  'mail_smtpport' => '465',
-  'mail_smtpauth' => true,
-  'mail_smtpname' => 'nextcloud@domain.de',
-  'mail_smtppassword' => 'EIN_STARKES_PASSWORT',
+  'mail_from_address' => getenv('NC_MAIL_FROM'),
+  'mail_domain' => getenv('NC_MAIL_DOMAIN'),
+  'mail_smtphost' => getenv('NC_MAIL_HOST'),
+  'mail_smtpport' => getenv('NC_MAIL_PORT'),
+  'mail_smtpauth' => getenv('NC_MAIL_AUTH') === 'true',
+  'mail_smtpname' => getenv('NC_MAIL_USER'),
+  'mail_smtppassword' => getenv('NC_MAIL_PASSWORD'),
   'mail_smtpstreamoptions' =>
   array (
     'ssl' =>
@@ -65,7 +71,7 @@ $CONFIG = array (
       'verify_peer_name' => true,
     ),
   ),
-  'mail_smtpsecure' => 'ssl',
+  'mail_smtpsecure' => getenv('NC_MAIL_SECURE'),
 
   'preview_max_x' => NULL,
   'preview_max_y' => NULL,
@@ -75,6 +81,7 @@ $CONFIG = array (
   'preview_use_imagick' => true,
   'preview_interpolate' => false,
   'enable_previews' => true,
+
   'enabledPreviewProviders' =>
   array (
     0 => 'OC\\Preview\\JPEG',
@@ -90,6 +97,7 @@ $CONFIG = array (
   'memcache.local' => '\\OC\\Memcache\\APCu',
   'memcache.locking' => '\\OC\\Memcache\\Redis',
   'memcache.distributed' => '\\OC\\Memcache\\Redis',
+
   'redis' =>
   array (
     'host' => 'nc_redis',
@@ -97,6 +105,7 @@ $CONFIG = array (
     'timeout' => 0.0,
     'dbindex' => 0,
   ),
+
   'filelocking.enabled' => true,
 
   'memories.db.triggers.fcu' => true,

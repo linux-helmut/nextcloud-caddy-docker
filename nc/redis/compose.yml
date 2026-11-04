@@ -2,6 +2,7 @@ services:
   nc_redis:
     image: redis:alpine
     container_name: nc_redis
+
     command: >
       redis-server
       --maxmemory 512mb
@@ -12,9 +13,9 @@ services:
     networks:
       nextcloud:
 
-    restart: always
+    restart: unless-stopped
 
 networks:
   nextcloud:
+    name: ${DOCKER_NETWORK}
     external: true
-    

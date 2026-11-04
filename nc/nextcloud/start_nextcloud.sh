@@ -1,5 +1,6 @@
 #!/bin/bash
+set -e
 
-docker compose up -d nextcloud
+docker compose --env-file /docker/nc/config.env up -d nextcloud
 
-exit
+exit 0

@@ -1,7 +1,14 @@
 services:
   nextcloud:
-    image: nextcloud:v1.0.0
+    env_file:
+      - /docker/nc/config.env
+    image: ${NC_IMAGE_NAME}:${NC_IMAGE_VERSION}
     container_name: nextcloud
+
+    build:
+      context: .
+      args:
+        INSTALL_NODE26: ${INSTALL_NODE26:-false}
 
     networks:
       nextcloud:
@@ -21,5 +28,6 @@ services:
 
 networks:
   nextcloud:
+    name: ${DOCKER_NETWORK}
     external: true
-    
+

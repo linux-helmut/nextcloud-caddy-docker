@@ -12,8 +12,8 @@ services:
 
     environment:
       TZ: Europe/Berlin
-      MARIADB_ROOT_PASSWORD: "root"
-      
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+
     volumes:
       - /docker/nc/mariadb/db:/var/lib/mysql
       - /docker/nc/mariadb/mariadb.cnf:/etc/mysql/mariadb.cnf:ro
@@ -22,5 +22,5 @@ services:
 
 networks:
   nextcloud:
+    name: ${DOCKER_NETWORK}
     external: true
-    

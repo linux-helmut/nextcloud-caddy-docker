@@ -1,11 +1,11 @@
 {
         servers {
                 protocols h1 h2 h3
-                trusted_proxies static private_ranges 172.30.0.0/16
+                trusted_proxies static private_ranges {$DOCKER_IPV4_SUBNET} {$DOCKER_IPV6_SUBNET}
         }
 }
 
-cloud.lokal.de {
+{$NC_DOMAIN} {
         tls internal
         root * /var/www/nextcloud
         encode gzip zstd
@@ -41,7 +41,7 @@ cloud.lokal.de {
         file_server
 }
 
-office.lokal.de {
+{$OFFICE_DOMAIN} {
         tls internal
         @blocked path / /welcome* /example*
         respond @blocked 404

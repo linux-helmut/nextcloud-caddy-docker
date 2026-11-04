@@ -4,6 +4,8 @@ Ordner /docker erstellen
 GitHub Repository herunter laden
 Ordner NC nach /docker/nc kopieren
 
+/docker/nc/config.env bearbeiten !!!
+
 Docker Network erstellen: /docker/nc/create_network.sh
 
 Redis Container erstellen und starten: /docker/nc/redis/start_redis.sh
