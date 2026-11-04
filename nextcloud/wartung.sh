@@ -32,8 +32,6 @@ run_occ maintenance:repair
 run_occ trashbin:cleanup --all-users
 run_occ files:scan-app-data
 run_occ db:add-missing-indices
-
-# Nur bei Bedarf aktivieren:
 run_occ files:scan --all
 
 echo
