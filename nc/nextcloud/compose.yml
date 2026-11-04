@@ -1,9 +1,9 @@
 services:
-  nextcloud:
+  nc_cloud:
     env_file:
       - /docker/nc/config.env
     image: ${NC_IMAGE_NAME}:${NC_IMAGE_VERSION}
-    container_name: nextcloud
+    container_name: nc_cloud
 
     build:
       context: .
@@ -11,7 +11,7 @@ services:
         INSTALL_NODE26: ${INSTALL_NODE26:-false}
 
     networks:
-      nextcloud:
+      nc_cloud:
 
     environment:
       PUID: "1000"
@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
 
 networks:
-  nextcloud:
+  nc_cloud:
     name: ${DOCKER_NETWORK}
     external: true
 

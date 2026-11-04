@@ -13,8 +13,8 @@ services:
       - /docker/nc/euro-office/private:/var/www/euro-office/Data
 
     networks:
-      - nextcloud
+      - nc_cloud
 
 networks:
-  nextcloud:
+  nc_cloud:
     external: true

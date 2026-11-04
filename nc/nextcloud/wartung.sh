@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-CONTAINER="nextcloud"
+CONTAINER="nc_cloud"
 OCC="/var/www/nextcloud/occ"
-LOG="/docker/nextcloud/maintenance-$(date +%F_%H-%M-%S).log"
+LOG="/docker/nc/maintenance-$(date +%F_%H-%M-%S).log"
 
 mkdir -p "$(dirname "$LOG")"
 exec > >(tee -a "$LOG") 2>&1

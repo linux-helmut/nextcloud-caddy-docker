@@ -11,11 +11,11 @@ services:
       --tcp-backlog 511
 
     networks:
-      nextcloud:
+      nc_cloud:
 
     restart: unless-stopped
 
 networks:
-  nextcloud:
+  nc_cloud:
     name: ${DOCKER_NETWORK}
     external: true

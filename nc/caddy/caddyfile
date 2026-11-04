@@ -10,7 +10,7 @@
         root * /var/www/nextcloud
         encode gzip zstd
         handle_path /push/* {
-                reverse_proxy http://nextcloud:7867
+                reverse_proxy http://nc_cloud:7867
         }
         header {
                 Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
@@ -37,7 +37,12 @@
                 path /.xml
         }
         respond @forbidden 404
-        php_fastcgi nextcloud:9000
+
+        # OCS Provider
+        @ocsProvider path /ocs-provider /ocs-provider/
+        rewrite @ocsProvider /ocs-provider/index.php
+
+        php_fastcgi nc_cloud:9000
         file_server
 }
 
