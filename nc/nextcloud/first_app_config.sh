@@ -9,7 +9,7 @@ docker exec -it nextcloud php /var/www/nextcloud/occ memories:places-setup
 docker exec -it nextcloud php /var/www/nextcloud/occ maintenance:repair --include-expensive
 docker exec -it nextcloud php /var/www/nextcloud/occ db:add-missing-indices
 
-docker exec -it nextcloud php /var/www/nextcloud/occ app:install files_3dmodelviewer
+#docker exec -it nextcloud php /var/www/nextcloud/occ app:install files_3dmodelviewer
 docker exec -it nextcloud php /var/www/nextcloud/occ app:install calendar
 docker exec -it nextcloud php /var/www/nextcloud/occ app:install contacts
 docker exec -it nextcloud php /var/www/nextcloud/occ app:install camerarawpreviews

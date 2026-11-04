@@ -1,0 +1,32 @@
+
+
+Ordner /docker erstellen
+GitHub Repository herunter laden
+Ordner NC nach /docker/nc kopieren
+
+Docker Network erstellen: /docker/nc/create_network.sh
+
+Redis Container erstellen und starten: /docker/nc/redis/start_redis.sh
+
+MariaDB Container erstellen und starten: /docker/nc/mariadb/start_mariadb.sh
+
+Datenbank und Benutzer für Nextcloud erstellen, sowie MariaDB absichern: /docker/nc/mariadb/first_start.sh
+---> Hier wird 2x das Root-Passwort abgefragt (Vorgabe: root)
+---> Switch to unix_socket authentication [Y/n]: n
+---> Change the root password? [Y/n]: sollte geändert werden !!!
+---> Remove anonymous users? [Y/n]: y
+---> Disallow root login remotely? [Y/n]: y
+---> Remove test database and access to it? [Y/n]: y
+---> Reload privilege tables now? [Y/n]: y
+
+Nextcloud Image erstellen (Vorgabe v1.0.0): /docker/nc/nextcloud/build_nextcloud_image.sh
+Neuste Nextcloud Version laden, entpacken und Standard Vorgaben kopieren: /docker/nc/nextcloud/load_latest_nextcloud.sh
+Nextcloud Container erstellen und starten: /docker/nc/nextcloud/start_nextcloud.sh
+
+Caddy Container erstellen und starten: /docker/nc/caddy/start_caddy.sh
+
+Browser öffnen: https://cloud.lokal.de
+Nextcloud Installation abschließen.
+
+Nextcloud: Installieren und deaktivieren diverser APPs: /docker/nc/nextcloud/first_app_config.sh
+

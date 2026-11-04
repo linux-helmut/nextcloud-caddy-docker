@@ -12,10 +12,10 @@ services:
       TZ: Europe/Berlin
 
     volumes:
-      - /docker/nextcloud/etc:/etc/php/8.4/cli
-      - /docker/nextcloud/etc:/etc/php/8.4/fpm
-      - /docker/nextcloud/html:/var/www/nextcloud
-      - /docker/nextcloud/data:/var/www/data
+      - /docker/nc/nextcloud/etc:/etc/php/8.4/cli
+      - /docker/nc/nextcloud/etc:/etc/php/8.4/fpm
+      - /docker/nc/nextcloud/html:/var/www/nextcloud
+      - /docker/nc/nextcloud/data:/var/www/data
 
     restart: unless-stopped
 
