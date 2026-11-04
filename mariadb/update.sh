@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker compose pull mariadb
-docker compose up -d mariadb
+docker compose pull nc_mariadb
+docker compose up -d nc_mariadb
 
 exit
