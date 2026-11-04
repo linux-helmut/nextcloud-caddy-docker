@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker compose pull redis
-docker compose up -d redis
+docker compose pull nc_redis
+docker compose up -d nc_redis
 
 exit
