@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker compose up -d nc_euro-office
+docker compose --env-file /docker/nc/config.env up -d nc_euro-office
 
 
 exit

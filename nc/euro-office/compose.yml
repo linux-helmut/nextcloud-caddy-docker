@@ -6,7 +6,7 @@ services:
 
     environment:
       JWT_ENABLED: "true"
-      JWT_SECRET: "secret"
+      JWT_SECRET: ${EUROOFFICE_JWT_SECRET}
 
     volumes:
       - /docker/nc/euro-office/data:/var/lib/euro-office/documentserver
@@ -18,3 +18,4 @@ services:
 networks:
   nc_cloud:
     external: true
+
