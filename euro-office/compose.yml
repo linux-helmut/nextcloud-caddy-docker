@@ -1,7 +1,7 @@
 services:
-  euro-office:
+  nc_euro-office:
     image: ghcr.io/euro-office/documentserver:latest
-    container_name: euro-office
+    container_name: nc_euro-office
     restart: unless-stopped
 
     environment:
@@ -9,8 +9,8 @@ services:
       JWT_SECRET: "secret"
 
     volumes:
-      - /docker/euro-office/data:/var/lib/euro-office/documentserver
-      - /docker/euro-office/private:/var/www/euro-office/Data
+      - /docker/nc/euro-office/data:/var/lib/euro-office/documentserver
+      - /docker/nc/euro-office/private:/var/www/euro-office/Data
 
     networks:
       - nextcloud
