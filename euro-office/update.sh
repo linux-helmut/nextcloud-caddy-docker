@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker compose pull euro-office
-docker compose up -d euro-office
+docker compose pull nc_euro-office
+docker compose up -d nc_euro-office
 
 exit
