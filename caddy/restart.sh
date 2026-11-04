@@ -1,5 +1,5 @@
 #!/bin/bash
 
-docker compose up -d --force-recreate caddy
+docker compose up -d --force-recreate nc_caddy
 
 exit
