@@ -1,7 +1,7 @@
 services:
-  mariadb:
+  nc_mariadb:
     image: mariadb:11.8
-    container_name: mariadb
+    container_name: nc_mariadb
 
     command:
       - mariadbd
@@ -15,8 +15,8 @@ services:
       MARIADB_ROOT_PASSWORD: "root"
       
     volumes:
-      - /docker/mariadb/db:/var/lib/mysql
-      - /docker/mariadb/mariadb.cnf:/etc/mysql/mariadb.cnf:ro
+      - /docker/nc/mariadb/db:/var/lib/mysql
+      - /docker/nc/mariadb/mariadb.cnf:/etc/mysql/mariadb.cnf:ro
 
     restart: unless-stopped
 
