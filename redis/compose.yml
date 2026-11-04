@@ -1,7 +1,7 @@
 services:
-  redis:
+  nc_redis:
     image: redis:alpine
-    container_name: redis
+    container_name: nc_redis
     command: >
       redis-server
       --maxmemory 512mb
