@@ -28,5 +28,18 @@ Caddy Container erstellen und starten: /docker/nc/caddy/start_caddy.sh
 Browser öffnen: https://cloud.lokal.de
 Nextcloud Installation abschließen.
 
-Nextcloud: Installieren und deaktivieren diverser APPs: /docker/nc/nextcloud/first_app_config.sh
+
+OPTIONAL:
+
+Nextcloud:
+Installieren und deaktivieren diverser APPs: /docker/nc/nextcloud/first_app_config.sh
+
+Portainer:
+Installieren und starten: /docker/portainer/start_portainer.sh
+
+Euro-Office:
+Installieren und starten vom Documentserver: /docker/nc/euro-office/start_euro-office.sh
+
+
+
 
