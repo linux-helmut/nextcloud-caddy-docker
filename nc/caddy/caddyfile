@@ -46,5 +46,5 @@ office.lokal.de {
         @blocked path / /welcome* /example*
         respond @blocked 404
         encode gzip zstd
-        reverse_proxy euro-office:80
+        reverse_proxy nc_euro-office:80
 }

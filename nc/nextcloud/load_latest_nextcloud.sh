@@ -3,11 +3,12 @@
 wget https://download.nextcloud.com/server/releases/latest.zip
 unzip latest.zip -d /docker/nextcloud
 mv nextcloud html
-chown www-data:www-data /docker/nextcloud/html -R
 #rm latest.zip
 
 cp /docker/nextcloud/example/vorgaben.config.php /docker/nextcloud/html/config/vorgaben.config.php
 cp /docker/nextcloud/example/autoconfig.php /docker/nextcloud/html/config/autoconfig.php
+
+chown www-data:www-data /docker/nextcloud/html -R
 
 mkdir data
 chown www-data:www-data data

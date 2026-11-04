@@ -12,12 +12,12 @@ $CONFIG = array (
 
   'notify_push' =>
   array (
-    'url' => 'https://nextcloud.domain.de/push',
+    'url' => 'https://cloud.lokal.de/push',
   ),
 
   'overwriteprotocol' => 'https',
-  'overwrite.cli.url' => 'https://nextcloud.domain.de',
-  'overwritehost' => 'nextcloud.domain.de',
+  'overwrite.cli.url' => 'https://cloud.lokal.de',
+  'overwritehost' => 'cloud.lokal.de',
   'overwritewebroot' => '/',
 
   'datadirectory' => '/var/www/data',
@@ -92,7 +92,7 @@ $CONFIG = array (
   'memcache.distributed' => '\\OC\\Memcache\\Redis',
   'redis' =>
   array (
-    'host' => 'redis',
+    'host' => 'nc_redis',
     'port' => 6379,
     'timeout' => 0.0,
     'dbindex' => 0,
