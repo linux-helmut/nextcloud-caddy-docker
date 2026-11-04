@@ -36,10 +36,13 @@ Installieren und deaktivieren diverser APPs: /docker/nc/nextcloud/first_app_conf
 
 Portainer:
 Installieren und starten: /docker/portainer/start_portainer.sh
+docker logs portainer
+Secret-Token aus dem LOG für die erste Anmeldung kopieren.
 
 Euro-Office:
 Installieren und starten vom Documentserver: /docker/nc/euro-office/start_euro-office.sh
-
+Euro-Office-App installieren: docker exec -it nextcloud php /var/www/nextcloud/occ app:install eurooffice
+Euro-Office Secret erstellen und in Nextcloud eintragen. Euro-Office URL in Nextcloud ergänzen.
 
 
 
