@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker compose up -d caddy
+docker compose up -d nc_caddy
 
 exit
 
