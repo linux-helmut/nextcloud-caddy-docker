@@ -8,8 +8,8 @@ $CONFIG = array (
   array (
     0 => getenv('DOCKER_IPV4_SUBNET'),
     1 => getenv('DOCKER_IPV6_SUBNET'),
-    1 => '127.0.0.1',
-    2 => '::1',
+    2 => '127.0.0.1',
+    3 => '::1',
   ),
 
   'notify_push' =>
