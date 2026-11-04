@@ -5,7 +5,7 @@
         }
 }
 
-nextcloud.domain.de {
+cloud.lokal.de {
         tls internal
         root * /var/www/nextcloud
         encode gzip zstd
@@ -41,7 +41,7 @@ nextcloud.domain.de {
         file_server
 }
 
-office.domain.de {
+office.lokal.de {
         tls internal
         @blocked path / /welcome* /example*
         respond @blocked 404
