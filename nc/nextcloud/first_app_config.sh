@@ -3,10 +3,24 @@
 source /docker/nc/config.env
 
 
+
 docker exec -it nc_cloud php /var/www/nextcloud/occ app:install previewgenerator
+
+
 docker exec -it nc_cloud php /var/www/nextcloud/occ app:install recognize
-docker exec -it nc_cloud php /var/www/nextcloud/occ app:install memories
 docker exec -it nc_cloud php /var/www/nextcloud/occ recognize:download-models
+docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set recognize faces.enabled --value="true"
+docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set recognize imagenet.enabled --value="true"
+docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set recognize landmarks.enabled --value="true"
+
+# Node.js-Pfad für Recognize setzen, wenn Node 26 installiert wurde
+if [ "$INSTALL_NODE26" = "true" ]; then
+    docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set recognize node_binary --value="/usr/local/bin/node"
+fi
+
+
+
+docker exec -it nc_cloud php /var/www/nextcloud/occ app:install memories
 docker exec -it nc_cloud php /var/www/nextcloud/occ memories:places-setup
 
 docker exec -it nc_cloud php /var/www/nextcloud/occ maintenance:repair --include-expensive
@@ -48,10 +62,6 @@ docker exec -it nc_cloud php /var/www/nextcloud/occ app:disable circles
 docker exec -it nc_cloud php /var/www/nextcloud/occ app:disable office
 
 
-# Node.js-Pfad für Recognize setzen, wenn Node 26 installiert wurde
-if [ "$INSTALL_NODE26" = "true" ]; then
-    docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set recognize node_binary --value="/usr/local/bin/node"
-fi
 
 
 exit
