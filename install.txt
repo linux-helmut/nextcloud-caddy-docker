@@ -13,7 +13,7 @@ Redis Container erstellen und starten: /docker/nc/redis/start_redis.sh
 MariaDB Container erstellen und starten: /docker/nc/mariadb/start_mariadb.sh
 
 Datenbank und Benutzer für Nextcloud erstellen, sowie MariaDB absichern: /docker/nc/mariadb/first_start.sh
----> Hier wird 2x das Root-Passwort abgefragt (Vorgabe: root)
+---> Hier wird das Root-Passwort abgefragt (Vorgabe: root)
 ---> Switch to unix_socket authentication [Y/n]: n
 ---> Change the root password? [Y/n]: sollte geändert werden !!!
 ---> Remove anonymous users? [Y/n]: y
@@ -26,6 +26,7 @@ Neuste Nextcloud Version laden, entpacken und Standard Vorgaben kopieren: /docke
 Nextcloud Container erstellen und starten: /docker/nc/nextcloud/start_nextcloud.sh
 
 Caddy Container erstellen und starten: /docker/nc/caddy/start_caddy.sh
+ACHTUNG: Port 80/TCP, 443/TCP und 443/UDP müssen standardmäßig frei sein, ggf. caddyfile anpassen.
 
 Browser öffnen: https://cloud.lokal.de
 Nextcloud Installation abschließen.
