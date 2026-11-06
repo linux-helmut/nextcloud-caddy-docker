@@ -17,23 +17,27 @@
 
 Netzwerk erstellen:
 
-    /docker/nc/create_network.sh
+    cd /docker/nc
+    create_network.sh
 
 ## Redis
 
 Container erstellen und starten:
 
-    /docker/nc/redis/start_redis.sh
+    cd /docker/nc/redis
+    start_redis.sh
 
 ## MariaDB
 
 Container erstellen und starten:
 
-    /docker/nc/mariadb/start_mariadb.sh
+    cd /docker/nc/mariadb
+    start_mariadb.sh
 
 Datenbank und Benutzer für Nextcloud erstellen sowie MariaDB absichern:
 
-    /docker/nc/mariadb/first_start.sh
+    cd /docker/nc/mariadb
+    first_start.sh
 
 Bei der Datenbankabsicherung die angezeigten Fragen beachten.
 
@@ -41,21 +45,25 @@ Bei der Datenbankabsicherung die angezeigten Fragen beachten.
 
 Eigenes PHP-FPM-Image erstellen:
 
-    /docker/nc/nextcloud/build_nextcloud_image.sh
+    cd /docker/nc/nextcloud
+    build_nextcloud_image.sh
 
 Aktuelle Nextcloud-Version herunterladen und vorbereiten:
 
-    /docker/nc/nextcloud/load_latest_nextcloud.sh
+    cd /docker/nc/nextcloud
+    load_latest_nextcloud.sh
 
 Nextcloud-Container erstellen und starten:
 
-    /docker/nc/nextcloud/start_nextcloud.sh
+    cd /docker/nc/nextcloud
+    start_nextcloud.sh
 
 ## Caddy
 
 Container erstellen und starten:
 
-    /docker/nc/caddy/start_caddy.sh
+    cd /docker/nc/caddy
+    start_caddy.sh
 
 Die Ports 80/TCP, 443/TCP und gegebenenfalls 443/UDP müssen verfügbar sein.
 
@@ -75,13 +83,15 @@ Nextcloud-Installation abschließen.
 
 Vorgesehene Apps installieren und konfigurieren:
 
-    /docker/nc/nextcloud/first_app_config.sh
+    cd /docker/nc/nextcloud
+    first_app_config.sh
 
 ### Portainer
 
 Portainer installieren und starten:
 
-    /docker/portainer/start_portainer.sh
+    cd /docker/portainer
+    start_portainer.sh
 
 Anschließend die Container-Logs prüfen. Hier steht der Schlüssel für die erstmalige Anmeldung im Browser:
 
@@ -91,11 +101,13 @@ Anschließend die Container-Logs prüfen. Hier steht der Schlüssel für die ers
 
 Document Server erstellen und starten:
 
-    /docker/nc/euro-office/start_euro-office.sh
+    cd /docker/nc/euro-office
+    start_euro-office.sh
 
 Euro-Office-App in Nextcloud installieren und konfigurieren:
 
-    /docker/nc/euro-office/install_euro-office.sh
+    cd /docker/nc/euro-office
+    install_euro-office.sh
 
 Die Konfiguration verwendet OFFICE_DOMAIN, NC_DOMAIN und EUROOFFICE_JWT_SECRET aus der zentralen config.env.
 
