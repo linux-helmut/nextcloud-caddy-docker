@@ -83,7 +83,7 @@ Portainer installieren und starten:
 
     /docker/portainer/start_portainer.sh
 
-Anschließend die Container-Logs prüfen:
+Anschließend die Container-Logs prüfen. Hier steht der Schlüssel für die erstmalige Anmeldung im Browser:
 
     docker logs portainer
 
