@@ -4,7 +4,7 @@ Eine modulare, selbst betriebene Nextcloud-Umgebung auf Basis von Docker, PHP-FP
 
 Das Projekt ist so aufgebaut, dass die einzelnen Dienste unabhängig voneinander betrieben und gewartet werden können. Jeder Dienst besitzt eine eigene Docker-Compose-Konfiguration sowie eigene Skripte zum Starten, Neustarten und Aktualisieren. Die erstmalige Einrichtung ist separat in [`install.txt`](install.txt) beschrieben.
 
-**Standardeinstellung: lokale Nutzung im eigenen Netzwerk.** Die mitgelieferte Caddy- und Nextcloud-Konfiguration verwendet lokale Hostnamen und die interne Zertifizierungsstelle von Caddy. Bitte vor der Installation den Abschnitt [Lokale Nutzung und externe Erreichbarkeit](#lokale-nutzung-und-externe-erreichbarkeit) beachten.
+**Die mitgelieferte Beispielkonfiguration ist auf lokale Nutzung ausgelegt.** Über die zentrale Datei `nc/config.env` lässt sich Caddy mit `CADDY_TLS` wahlweise für interne oder öffentliche TLS-Zertifikate konfigurieren. Das Projekt kann mit passenden Domains und DNS-Einträgen auch öffentlich betrieben werden.
 
 ## Funktionen
 
@@ -61,37 +61,44 @@ Browser
 
 Datenbank, Redis, PHP-FPM und Euro-Office kommunizieren über das dedizierte Docker-Netzwerk. Die mitgelieferten Compose-Dateien veröffentlichen deren Dienstports nicht auf dem Host. Caddy veröffentlicht TCP-Port 80 und 443 sowie UDP-Port 443.
 
-## Lokale Nutzung und externe Erreichbarkeit
+## Lokale und öffentliche Nutzung
 
-### Standardeinstellung: lokale Nutzung
+Die Betriebsart wird über die zentrale Konfigurationsdatei `/docker/nc/config.env` festgelegt. Die mitgelieferten Werte sind Beispiele und müssen vor der Installation an die eigene Umgebung angepasst werden.
 
-Das Repository ist zunächst für den Zugriff innerhalb eines lokalen Netzwerks eingerichtet.
+### Interner Betrieb
 
-Caddy verwendet über die Direktive `tls internal` seine eigene interne Zertifizierungsstelle. Die vorgesehenen Hostnamen lauten:
+Für den internen Betrieb werden lokale DNS-Einträge benötigt. Die Beispiel-Hostnamen lauten:
 
 | Dienst | Lokaler Hostname |
 |---|---|
 | Nextcloud | `cloud.lokal.de` |
 | Euro-Office | `office.lokal.de` |
 
-Beide Hostnamen müssen im lokalen DNS-Server eingerichtet werden und auf die IP-Adresse des Docker-Hosts zeigen. Diese DNS-Einträge werden durch die Installationsskripte nicht automatisch angelegt.
+Für interne Zertifikate wird in `config.env` gesetzt:
 
-Zusätzlich müssen die Clients dem Root-Zertifikat der internen Caddy-Zertifizierungsstelle vertrauen. Andernfalls zeigen Browser und andere Clients eine Zertifikatswarnung an. Das Root-Zertifikat kann aus dem Datenverzeichnis von Caddy exportiert und auf den jeweiligen Geräten im Speicher für vertrauenswürdige Stammzertifikate installiert werden.
+```bash
+CADDY_TLS="tls internal"
+```
 
-Für eine saubere lokale HTTPS-Nutzung sind somit sowohl die lokalen DNS-Einträge als auch das vertrauenswürdige Caddy-Root-Zertifikat erforderlich.
+Caddy stellt dann eigene Zertifikate aus. Die Clients müssen der internen Caddy-Zertifizierungsstelle vertrauen. Das Root-Zertifikat kann aus dem persistenten Caddy-Datenverzeichnis exportiert und auf den jeweiligen Geräten als vertrauenswürdige Stammzertifizierungsstelle installiert werden.
 
-### Nutzung von außen über das Internet
+### Öffentlicher Betrieb über das Internet
 
-Die mitgelieferte Konfiguration ist nicht ohne Anpassungen für den öffentlichen Internetzugriff vorgesehen. Für die Nutzung mit öffentlichen Domains sind folgende Änderungen notwendig:
+Für öffentlich erreichbare Domains wird `CADDY_TLS` in `config.env` leer gesetzt:
 
-1. `cloud.lokal.de` und `office.lokal.de` durch die gewünschten öffentlichen Hostnamen ersetzen.
-2. Die Direktiven `tls internal` aus den entsprechenden Site-Blöcken in `nc/caddy/caddyfile` entfernen. Caddy kann anschließend automatisch öffentlich vertrauenswürdige Zertifikate beziehen, sofern DNS und Netzwerkzugriff korrekt eingerichtet sind.
-3. Das Repository und die tatsächlich verwendeten Konfigurationsdateien nach allen Vorkommen der bisherigen lokalen Hostnamen durchsuchen und diese konsistent ersetzen. Dazu gehören insbesondere `nc/nextcloud/example/vorgaben.config.php` (beispielsweise `overwritehost`, `overwrite.cli.url` und die URL für `notify_push`), die Caddy-Konfiguration und weitere domainabhängige Einstellungen.
-4. Öffentliche DNS-Einträge für alle Hostnamen einrichten, die auf die öffentliche IP-Adresse des Servers zeigen.
-5. TCP-Port 80 und 443 aus dem Internet erreichbar machen. Für HTTP/3 wird zusätzlich UDP-Port 443 benötigt.
-6. Die Nextcloud-Einstellungen für vertrauenswürdige Domains, Proxy und URL-Überschreibung sowie gegebenenfalls die Euro-Office-URL prüfen und an die öffentlichen Domains anpassen.
+```bash
+CADDY_TLS=""
+```
 
-Es reicht nicht aus, nur die Domains im Caddyfile zu ändern. Alle Domainreferenzen in Nextcloud und den zugehörigen Konfigurationen müssen übereinstimmen.
+Caddy verwendet dann seine automatische ACME-Zertifikatsverwaltung und versucht, öffentlich vertrauenswürdige Zertifikate zu beziehen. Dafür müssen folgende Voraussetzungen erfüllt sein:
+
+1. `NC_DOMAIN` und gegebenenfalls `OFFICE_DOMAIN` in `config.env` auf die gewünschten öffentlichen Hostnamen setzen.
+2. Öffentliche DNS-Einträge für diese Hostnamen anlegen. Sie müssen auf die öffentliche IP-Adresse des Docker-Hosts zeigen. Die DNS-Einträge werden nicht durch das Projekt erstellt.
+3. TCP-Port 80 und TCP-Port 443 müssen aus dem Internet erreichbar sein. Für HTTP/3 wird zusätzlich UDP-Port 443 benötigt.
+4. Domainreferenzen in den Nextcloud-Konfigurationsvorlagen prüfen und anpassen, insbesondere `overwritehost`, `overwrite.cli.url` und die URL für `notify_push` in `nc/nextcloud/example/vorgaben.config.php`.
+5. Nach der Installation die Nextcloud-Einstellungen für vertrauenswürdige Domains, Proxy und URL-Überschreibung sowie gegebenenfalls die Euro-Office-URL prüfen.
+
+Es reicht nicht aus, nur die DNS-Einträge zu ändern. Die Domains müssen in `config.env`, Caddy und den Nextcloud-Konfigurationen zusammenpassen.
 
 ## Voraussetzungen
 
@@ -175,18 +182,18 @@ Skript: `nc/create_network.sh`
 
 Erstellt das externe Docker-Bridge-Netzwerk, über das die Nextcloud-bezogenen Container miteinander kommunizieren.
 
-Aktuelle Netzwerkeinstellungen:
+Beispielwerte aus der mitgelieferten `config.env` (bei Bedarf anpassen):
 
 | Einstellung | Wert |
 |---|---|
-| Docker-Netzwerk | `nextcloud` |
-| Linux-Bridge-Interface | `br_nextcloud` |
+| Docker-Netzwerk | `nc_cloud` |
+| Linux-Bridge-Interface | `br_nc_cloud` |
 | IPv4-Subnetz | `172.30.0.0/16` |
 | IPv4-Gateway | `172.30.0.1` |
 | IPv6-Subnetz | `fd00:172:30::/64` |
 | IPv6-Gateway | `fd00:172:30::1` |
 
-Vor dem Anlegen prüfen, dass sich diese Adressbereiche nicht mit vorhandenen Docker-Netzwerken, LAN-Subnetzen oder VPN-Netzen überschneiden.
+Die Werte werden über `DOCKER_NETWORK`, `DOCKER_IPV4_SUBNET`, `DOCKER_IPV4_GATEWAY`, `DOCKER_IPV6_SUBNET` und `DOCKER_IPV6_GATEWAY` in `config.env` gesteuert. Vor dem Anlegen prüfen, dass sich die Adressbereiche nicht mit vorhandenen Docker-Netzwerken, LAN-Subnetzen oder VPN-Netzen überschneiden.
 
 ### MariaDB
 
@@ -204,7 +211,7 @@ Wichtige Dateien:
 | `first_start.sh` | Erstellt Nextcloud-Datenbank und Benutzer und startet anschließend `mariadb-secure-installation` |
 | `update_image.sh` | Lädt das konfigurierte Image und erstellt den Dienst neu |
 
-Vor der Verwendung die Beispiel-Zugangsdaten in der Compose-Datei und in `first_start.sh` prüfen.
+Datenbankname, Benutzer und Passwörter werden zentral in `config.env` festgelegt. Vor der Installation müssen alle Beispiel-Zugangsdaten ersetzt werden.
 
 ### Redis
 
@@ -236,7 +243,7 @@ Wichtige Skripte:
 
 | Skript | Aufgabe |
 |---|---|
-| `build_nextcloud_image.sh` | Baut das eigene Image (`nextcloud:v1.0.0`) |
+| `build_nextcloud_image.sh` | Baut das eigene Image aus `NC_IMAGE_NAME` und `NC_IMAGE_VERSION` in `config.env` |
 | `load_latest_nextcloud.sh` | Lädt die aktuelle Nextcloud-Version herunter, entpackt sie und kopiert Beispiel-Konfigurationen |
 | `start_nextcloud.sh` | Startet den PHP-FPM-Container |
 | `update_nextcloud.sh` | Erstellt den PHP-FPM-Container neu |
@@ -257,9 +264,9 @@ Die mitgelieferte Caddy-Konfiguration:
 
 - stellt Nextcloud unter `cloud.lokal.de` bereit
 - stellt Euro-Office unter `office.lokal.de` bereit
-- verwendet `tls internal` für lokal erzeugte Zertifikate
+- verwendet den Wert von `CADDY_TLS` aus `config.env`
 - aktiviert HTTP/1.1, HTTP/2 und HTTP/3
-- leitet PHP-Anfragen an `nextcloud:9000` weiter
+- leitet PHP-Anfragen an `nc_cloud:9000` weiter
 - leitet Euro-Office-Anfragen an `nc_euro-office:80` weiter
 - enthält Nextcloud-Weiterleitungen für bekannte Endpunkte und Zugriffsbeschränkungen
 
@@ -305,7 +312,7 @@ Das aktuelle Skript veröffentlicht die HTTP-Oberfläche von Portainer auf Host-
 
 ## Wartung und Updates
 
-Jeder Dienst besitzt eigene Skripte. Diese sollten aus dem jeweiligen Verzeichnis unter `/docker/nc/` aufgerufen werden, damit Docker Compose die passende `compose.yml` findet.
+Jeder Dienst besitzt eigene Skripte. Die Compose-Aufrufe verwenden die zentrale Datei `/docker/nc/config.env`. Beachte, dass einzelne Skripte zusätzlich ein bestimmtes Arbeitsverzeichnis voraussetzen; die Beispiele zeigen den vorgesehenen Aufruf.
 
 Beispiele:
 
@@ -346,7 +353,7 @@ Das Aktualisieren oder Neubauen des PHP-FPM-Images beziehungsweise -Containers a
 
 ## Sicherheitshinweise
 
-Das Repository enthält Beispiel-Zugangsdaten und Secrets zur Demonstration und für erste Tests. **Diese Werte dürfen nicht in einer produktiven Umgebung verwendet werden.** Datenbankpasswörter, MariaDB-Root-Passwort, Nextcloud-Administratorpasswort und das Euro-Office-JWT-Secret müssen ersetzt werden. Konfigurationsdateien mit Zugangsdaten sind zu schützen. Echte Secrets dürfen nicht in Git eingecheckt werden.
+Die mitgelieferte `nc/config.env` enthält ausdrücklich Beispielwerte. **Diese Werte müssen vor dem Einsatz ersetzt werden.** Das betrifft insbesondere Datenbankpasswörter, MariaDB-Root-Passwort, Nextcloud-Administratorpasswort, SMTP-Zugangsdaten und das Euro-Office-JWT-Secret. Die Datei ist als zentrale Konfiguration vorgesehen. Nach dem Kopieren nach `/docker/nc/config.env` sollte sie mit restriktiven Dateirechten geschützt werden, beispielsweise `chmod 600 /docker/nc/config.env`. Keine echten Zugangsdaten in ein öffentliches Git-Repository übernehmen.
 
 Zusätzlich gilt:
 

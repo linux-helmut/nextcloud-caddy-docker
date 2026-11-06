@@ -4,7 +4,7 @@ A modular, self-hosted Nextcloud environment built with Docker, PHP-FPM, MariaDB
 
 The project is designed to keep the individual services independent. Each service has its own Docker Compose configuration and management scripts. The initial installation procedure is documented separately in [`install.txt`](install.txt).
 
-**Default setup: local network use.** The supplied Caddy and Nextcloud configuration uses local hostnames and Caddy's internal certificate authority. See [Local network setup and external access](#local-network-setup-and-external-access) before installing.
+**The supplied example configuration is intended for local use.** The central `nc/config.env` file lets you configure Caddy for internal or public TLS certificates through `CADDY_TLS`. With suitable domains and DNS records, the project can also be used for a publicly accessible installation.
 
 ## Features
 
@@ -13,7 +13,7 @@ The project is designed to keep the individual services independent. Each servic
 - Caddy reverse proxy with HTTPS and HTTP/3
 - Custom PHP-FPM image based on Debian 13
 - PHP 8.4 and Nextcloud-related PHP extensions
-- Node.js 26, ImageMagick and FFmpeg in the PHP-FPM image
+- ImageMagick and FFmpeg in the PHP-FPM image; Node.js 26 can be included optionally
 - MariaDB 11.8 database backend
 - Redis for caching and transactional file locking
 - Optional Euro-Office Document Server integration
@@ -61,13 +61,13 @@ Browser
 
 The database, Redis, PHP-FPM and Euro-Office containers communicate over the dedicated Docker network. Their service ports are not published to the host by the supplied Compose files. Caddy publishes TCP ports 80 and 443 and UDP port 443.
 
-## Local network setup and external access
+## Local and public deployment
 
-### Default configuration: local use
+The deployment mode is controlled through the central `/docker/nc/config.env` file. The supplied values are examples and must be adapted to the target environment before installation.
 
-The repository is configured for local network access by default.
+### Internal deployment
 
-Caddy uses its internal certificate authority through the `tls internal` directive. The supplied hostnames are:
+For internal use, local DNS records are required. The example hostnames are:
 
 | Service | Local hostname |
 |---|---|
@@ -76,22 +76,31 @@ Caddy uses its internal certificate authority through the `tls internal` directi
 
 Both hostnames must be configured in the local DNS server and must resolve to the IP address of the Docker host. This DNS configuration is not created automatically by the installation scripts.
 
-Clients must trust the root certificate of Caddy's internal certificate authority. Otherwise, browsers and other clients will report that the certificate is not trusted. Export Caddy's root certificate from its data directory and install it in the trusted root certificate store on the client devices.
+For internal certificates, set the following in `config.env`:
 
-The local DNS records and the trusted Caddy root certificate are both required for a clean local HTTPS setup.
+```bash
+CADDY_TLS="tls internal"
+```
 
-### Using the installation externally
+Caddy then issues its own certificates. Clients must trust Caddy's internal certificate authority. The root certificate can be exported from Caddy's persistent data directory and installed on each client as a trusted root certificate authority.
 
-The supplied configuration is not ready for public Internet access without changes. To use the installation with public domains:
+### Public deployment over the Internet
 
-1. Replace `cloud.lokal.de` and `office.lokal.de` with the intended public hostnames.
-2. Remove the `tls internal` directives from the corresponding site blocks in `nc/caddy/caddyfile`. Caddy can then obtain publicly trusted certificates automatically when the DNS and network requirements are met.
-3. Search the repository and the deployed configuration for every occurrence of the old local hostnames and update them consistently. This includes, in particular, `nc/nextcloud/example/vorgaben.config.php` (for example, `overwritehost`, `overwrite.cli.url` and the `notify_push` URL), the Caddy configuration and any other domain-dependent settings.
-4. Configure public DNS records for all hostnames to point to the server's public IP address.
-5. Make TCP ports 80 and 443 reachable from the Internet. UDP port 443 is needed for HTTP/3.
-6. Review the Nextcloud trusted-domain, overwrite and proxy settings, and any Euro-Office URL settings, to ensure they match the public domains and deployment.
+For publicly accessible domains, leave `CADDY_TLS` empty in `config.env`:
 
-Changing only the Caddyfile is not sufficient. All domain references in the Nextcloud and related configuration must agree.
+```bash
+CADDY_TLS=""
+```
+
+Caddy will then use its automatic ACME certificate management and attempt to obtain publicly trusted certificates. The following requirements must be met:
+
+1. Set `NC_DOMAIN` and, if used, `OFFICE_DOMAIN` in `config.env` to the desired public hostnames.
+2. Create public DNS records for those hostnames. They must point to the Docker host's public IP address. The project does not create DNS records.
+3. TCP ports 80 and 443 must be reachable from the Internet. UDP port 443 is also required for HTTP/3.
+4. Review domain references in the Nextcloud configuration templates and adapt them, especially `overwritehost`, `overwrite.cli.url` and the `notify_push` URL in `nc/nextcloud/example/vorgaben.config.php`.
+5. After installation, review Nextcloud trusted-domain, proxy and overwrite settings, as well as the Euro-Office URL if applicable.
+
+Changing DNS records alone is not sufficient. The domains must match in `config.env`, Caddy and the Nextcloud configuration.
 
 ## Requirements
 
@@ -175,18 +184,18 @@ Script: `nc/create_network.sh`
 
 Creates the external Docker bridge network used by the Nextcloud-related containers.
 
-Current network settings:
+Example values from the supplied `config.env` (adjust as required):
 
 | Setting | Value |
 |---|---|
-| Docker network | `nextcloud` |
-| Linux bridge interface | `br_nextcloud` |
+| Docker network | `nc_cloud` |
+| Linux bridge interface | `br_nc_cloud` |
 | IPv4 subnet | `172.30.0.0/16` |
 | IPv4 gateway | `172.30.0.1` |
 | IPv6 subnet | `fd00:172:30::/64` |
 | IPv6 gateway | `fd00:172:30::1` |
 
-Check that these address ranges do not overlap with existing Docker networks, LAN subnets or VPN networks before creating the network.
+The values are controlled through `DOCKER_NETWORK`, `DOCKER_IPV4_SUBNET`, `DOCKER_IPV4_GATEWAY`, `DOCKER_IPV6_SUBNET` and `DOCKER_IPV6_GATEWAY` in `config.env`. Check that the address ranges do not overlap with existing Docker networks, LAN subnets or VPN networks before creating the network.
 
 ### MariaDB
 
@@ -204,7 +213,7 @@ Main files:
 | `first_start.sh` | Creates the Nextcloud database and user, then starts `mariadb-secure-installation` |
 | `update_image.sh` | Pulls the configured image and recreates the service |
 
-Review the example database credentials in the Compose file and `first_start.sh` before using the setup.
+Database name, user and passwords are configured centrally in `config.env`. Replace all example credentials before installation.
 
 ### Redis
 
@@ -222,7 +231,7 @@ Management scripts:
 
 Directory: `nc/nextcloud/`
 
-The custom image is built from `debian:trixie-slim` and provides PHP 8.4 with the extensions and tools required by this setup. It also includes Node.js 26, ImageMagick, FFmpeg and `iproute2`.
+The custom image is built from `debian:trixie-slim` and provides PHP 8.4 with the extensions and tools required by this setup. It includes ImageMagick, FFmpeg and `iproute2`. Node.js 26 can optionally be installed during the image build by setting `INSTALL_NODE26="true"` in `config.env`.
 
 **The image contains the PHP-FPM runtime, not the Nextcloud application code or user configuration.** The application, configuration and data are mounted from persistent host directories:
 
@@ -236,7 +245,7 @@ Main scripts:
 
 | Script | Purpose |
 |---|---|
-| `build_nextcloud_image.sh` | Builds the custom image (`nextcloud:v1.0.0`) |
+| `build_nextcloud_image.sh` | Builds the custom image using `NC_IMAGE_NAME` and `NC_IMAGE_VERSION` from `config.env` |
 | `load_latest_nextcloud.sh` | Downloads and prepares the latest Nextcloud release and copies example configuration files |
 | `start_nextcloud.sh` | Starts the PHP-FPM container |
 | `update_nextcloud.sh` | Recreates the PHP-FPM container |
@@ -257,9 +266,9 @@ The supplied Caddy configuration:
 
 - Serves Nextcloud on `cloud.lokal.de`
 - Serves Euro-Office on `office.lokal.de`
-- Uses `tls internal` for locally generated certificates
+- Uses the value of `CADDY_TLS` from `config.env`
 - Enables HTTP/1.1, HTTP/2 and HTTP/3
-- Forwards PHP requests to `nextcloud:9000`
+- Forwards PHP requests to `nc_cloud:9000`
 - Forwards Euro-Office requests to `nc_euro-office:80`
 - Includes Nextcloud well-known redirects and access restrictions
 
@@ -305,7 +314,7 @@ The current script publishes Portainer's HTTP interface on host port `9000`. Pro
 
 ## Maintenance and updates
 
-Each service has its own scripts. Run them from the corresponding directory under `/docker/nc/`, so Docker Compose finds the intended `compose.yml`.
+Each service has its own scripts. Compose commands use the central `/docker/nc/config.env` file. Note that some scripts also expect a particular working directory; the examples below show the intended invocation.
 
 Examples:
 
@@ -346,7 +355,7 @@ Updating or rebuilding the PHP-FPM image/container does not update the Nextcloud
 
 ## Security notes
 
-The repository contains example credentials and secrets for demonstration and initial testing. **Do not use these values in a production environment.** Replace database passwords, the MariaDB root password, the Nextcloud administrator password and the Euro-Office JWT secret. Protect configuration files containing credentials and do not commit real secrets to Git.
+The supplied `nc/config.env` intentionally contains example values. **Replace these values before using the setup.** This includes database passwords, the MariaDB root password, the Nextcloud administrator password, SMTP credentials and the Euro-Office JWT secret. The file is intended to remain the central configuration. After copying it to `/docker/nc/config.env`, protect it with restrictive file permissions, for example `chmod 600 /docker/nc/config.env`. Never commit real credentials to a public Git repository.
 
 Also:
 
