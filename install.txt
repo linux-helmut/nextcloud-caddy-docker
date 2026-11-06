@@ -1,51 +1,105 @@
+# Installation nextcloud-caddy-docker
 
+1. Verzeichnis `/docker` erstellen.
+2. GitHub-Repository herunterladen und entpacken.
+3. Den Ordner `nc` nach `/docker/nc` kopieren.
+4. Die zentrale Konfiguration `/docker/nc/config.env` anpassen.
 
-Ordner /docker erstellen
-GitHub Repository herunter laden
-Ordner NC nach /docker/nc kopieren
+   WICHTIG:
+   - Alle Beispielpasswörter und JWT-Schlüssel ersetzen.
+   - Eigene Domains für Nextcloud und optional Euro-Office eintragen.
+   - Docker-Netzwerk und IP-Bereiche prüfen.
+   - Für internen Betrieb: CADDY_TLS="tls internal"
+   - Für öffentlichen Betrieb: CADDY_TLS=""
+   - Bei öffentlichem Betrieb DNS-Einträge und Firewall konfigurieren.
 
-/docker/nc/config.env bearbeiten !!!
+## Docker-Netzwerk
 
-Docker Network erstellen: /docker/nc/create_network.sh
+Netzwerk erstellen:
 
-Redis Container erstellen und starten: /docker/nc/redis/start_redis.sh
+    /docker/nc/create_network.sh
 
-MariaDB Container erstellen und starten: /docker/nc/mariadb/start_mariadb.sh
+## Redis
 
-Datenbank und Benutzer für Nextcloud erstellen, sowie MariaDB absichern: /docker/nc/mariadb/first_start.sh
----> Hier wird das Root-Passwort abgefragt (Vorgabe: root)
----> Switch to unix_socket authentication [Y/n]: n
----> Change the root password? [Y/n]: sollte geändert werden !!!
----> Remove anonymous users? [Y/n]: y
----> Disallow root login remotely? [Y/n]: y
----> Remove test database and access to it? [Y/n]: y
----> Reload privilege tables now? [Y/n]: y
+Container erstellen und starten:
 
-Nextcloud Image erstellen (Vorgabe v1.0.0): /docker/nc/nextcloud/build_nextcloud_image.sh
-Neuste Nextcloud Version laden, entpacken und Standard Vorgaben kopieren: /docker/nc/nextcloud/load_latest_nextcloud.sh
-Nextcloud Container erstellen und starten: /docker/nc/nextcloud/start_nextcloud.sh
+    /docker/nc/redis/start_redis.sh
 
-Caddy Container erstellen und starten: /docker/nc/caddy/start_caddy.sh
-ACHTUNG: Port 80/TCP, 443/TCP und 443/UDP müssen standardmäßig frei sein, ggf. caddyfile anpassen.
+## MariaDB
 
-Browser öffnen: https://cloud.lokal.de
-Nextcloud Installation abschließen.
+Container erstellen und starten:
 
+    /docker/nc/mariadb/start_mariadb.sh
 
-OPTIONAL:
+Datenbank und Benutzer für Nextcloud erstellen sowie MariaDB absichern:
 
-Nextcloud:
-Installieren und deaktivieren diverser APPs: /docker/nc/nextcloud/first_app_config.sh
+    /docker/nc/mariadb/first_start.sh
 
-Portainer:
-Installieren und starten: /docker/portainer/start_portainer.sh
-docker logs portainer
-Secret-Token aus dem LOG für die erste Anmeldung kopieren.
+Bei der Datenbankabsicherung die angezeigten Fragen beachten.
 
-Euro-Office:
-Installieren und starten vom Documentserver: /docker/nc/euro-office/start_euro-office.sh
-Euro-Office-App installieren: docker exec -it nextcloud php /var/www/nextcloud/occ app:install eurooffice
-Euro-Office Secret erstellen und in Nextcloud eintragen. Euro-Office URL in Nextcloud ergänzen.
+## Nextcloud
 
+Eigenes PHP-FPM-Image erstellen:
 
+    /docker/nc/nextcloud/build_nextcloud_image.sh
 
+Aktuelle Nextcloud-Version herunterladen und vorbereiten:
+
+    /docker/nc/nextcloud/load_latest_nextcloud.sh
+
+Nextcloud-Container erstellen und starten:
+
+    /docker/nc/nextcloud/start_nextcloud.sh
+
+## Caddy
+
+Container erstellen und starten:
+
+    /docker/nc/caddy/start_caddy.sh
+
+Die Ports 80/TCP, 443/TCP und gegebenenfalls 443/UDP müssen verfügbar sein.
+
+Bei öffentlichem Betrieb müssen die Domains auf den Server zeigen und Caddy die Zertifikate beziehen können.
+
+## Nextcloud-Erstinstallation
+
+Im Browser öffnen:
+
+    https://<NC_DOMAIN>
+
+Nextcloud-Installation abschließen.
+
+## Optionale Komponenten
+
+### Nextcloud-Apps
+
+Vorgesehene Apps installieren und konfigurieren:
+
+    /docker/nc/nextcloud/first_app_config.sh
+
+### Portainer
+
+Portainer installieren und starten:
+
+    /docker/portainer/start_portainer.sh
+
+Anschließend die Container-Logs prüfen:
+
+    docker logs portainer
+
+### Euro-Office
+
+Document Server erstellen und starten:
+
+    /docker/nc/euro-office/start_euro-office.sh
+
+Euro-Office-App in Nextcloud installieren und konfigurieren:
+
+    /docker/nc/euro-office/install_euro-office.sh
+
+Die Konfiguration verwendet OFFICE_DOMAIN, NC_DOMAIN und EUROOFFICE_JWT_SECRET aus der zentralen config.env.
+
+WICHTIG:
+Bei interner TLS-Konfiguration (tls internal) muss der Administrator sicherstellen, dass der Euro-Office-Document-Server der Caddy-Zertifizierungsstelle vertraut.
+
+Die TLS-Zertifikatsprüfung sollte nicht pauschal deaktiviert werden.
