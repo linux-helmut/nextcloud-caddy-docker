@@ -63,9 +63,9 @@ Bei öffentlichem Betrieb müssen die Domains auf den Server zeigen und Caddy di
 
 ## Nextcloud-Erstinstallation
 
-Im Browser öffnen:
+Im Browser öffnen (ggf. die in config.env eingetragene URL):
 
-    https://cloud.lokal.de   (oder die in config.env eingetragene URL)
+    https://cloud.lokal.de
 
 Nextcloud-Installation abschließen.
 
