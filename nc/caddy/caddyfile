@@ -6,7 +6,7 @@
 }
 
 {$NC_DOMAIN} {
-        tls internal
+        {$CADDY_TLS}
         root * /var/www/nextcloud
         encode gzip zstd
         handle_path /push/* {
@@ -47,7 +47,7 @@
 }
 
 {$OFFICE_DOMAIN} {
-        tls internal
+        {$CADDY_TLS}
         @blocked path / /welcome* /example*
         respond @blocked 404
         encode gzip zstd
