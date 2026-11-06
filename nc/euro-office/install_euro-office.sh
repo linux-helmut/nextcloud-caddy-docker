@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -e
+set -e
 
 # Zentrale Konfiguration laden
 source /docker/nc/config.env
@@ -20,7 +20,7 @@ docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set \
 docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set eurooffice DocumentServerInternalUrl --value="http://nc_euro-office/"
     
 # Interne Adresse: Euro-Office -> Nextcloud
-docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set eurooffice StorageUrl -value="https://${NC_DOMAIN}/"
+docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set eurooffice StorageUrl --value="https://${NC_DOMAIN}/"
 
 # Gemeinsamer JWT-Schlüssel
 docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set \
