@@ -65,7 +65,7 @@ Bei öffentlichem Betrieb müssen die Domains auf den Server zeigen und Caddy di
 
 Im Browser öffnen:
 
-    https://<NC_DOMAIN>
+    https://cloud.lokal.de   (oder die in config.env eingetragene URL)
 
 Nextcloud-Installation abschließen.
 
