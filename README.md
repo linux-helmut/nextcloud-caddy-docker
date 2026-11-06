@@ -365,6 +365,10 @@ Also:
 - Review Nextcloud trusted-domain, proxy and overwrite settings after changing domains.
 - Back up the database, Nextcloud data, application configuration and service-specific persistent data.
 
-## License and third-party software
+## License
 
-This repository contains Docker Compose files, shell scripts and configuration examples. Third-party software and container images remain subject to their respective licenses and terms.
+Copyright (c) 2026 linux-helmut
+
+This project is licensed under the **PolyForm Noncommercial License 1.0.0**. The license permits private and other non-commercial use, modification, and redistribution of the project and modified versions. Commercial use is not permitted without separate permission from the rights holder.
+
+The complete license text is available in [`LICENSE`](LICENSE). This license applies to the project components provided by `linux-helmut`. Third-party software, container images, and other external components remain subject to their respective licenses and terms.

@@ -363,6 +363,10 @@ Zusätzlich gilt:
 - Nextcloud-Einstellungen für vertrauenswürdige Domains, Proxy und URL-Überschreibung nach Domainänderungen prüfen.
 - Datenbank, Nextcloud-Daten, Anwendungskonfiguration und persistente Daten der Dienste regelmäßig sichern.
 
-## Lizenz und Drittanbieter-Software
+## Lizenz
 
-Dieses Repository enthält Docker-Compose-Dateien, Shell-Skripte und Konfigurationsbeispiele. Für Drittanbieter-Software und Container-Images gelten deren jeweilige Lizenzen und Nutzungsbedingungen.
+Copyright (c) 2026 linux-helmut
+
+Dieses Projekt steht unter der **PolyForm Noncommercial License 1.0.0**. Die Lizenz erlaubt die private und sonstige nicht-kommerzielle Nutzung, das Verändern sowie die Weitergabe des Projekts und eigener Änderungen. Eine kommerzielle Nutzung ist ohne eine separate Genehmigung des Rechteinhabers nicht gestattet.
+
+Der vollständige Lizenztext befindet sich in der Datei [`LICENSE`](LICENSE). Die Lizenz gilt für die von `linux-helmut` bereitgestellten Projektbestandteile. Drittanbieter-Software, Container-Images und sonstige externe Komponenten unterliegen weiterhin ihren jeweiligen Lizenzen und Nutzungsbedingungen.
