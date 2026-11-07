@@ -20,6 +20,10 @@ docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set euroo
 # Interne Adresse: Euro-Office -> Nextcloud
 docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set eurooffice StorageUrl --value="https://${NC_DOMAIN}/"
 
+# Euro-Office nicht verwenden um Vorschauen zu generieren
+docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set eurooffice preview --value="false"
+
+
 # Gemeinsamer JWT-Schlüssel
 docker exec -u www-data nc_cloud php /var/www/nextcloud/occ config:app:set \
     eurooffice jwt_secret \
