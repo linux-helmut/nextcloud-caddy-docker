@@ -117,7 +117,7 @@ Die Installation von Debian und Docker selbst ist nicht Bestandteil dieses Proje
 
 ## Installation
 
-Für die erstmalige Einrichtung bitte der Datei [`install.txt`](install.txt) folgen. Sie enthält die vorgesehenen Installationsschritte und die dazugehörigen Befehle in der richtigen Reihenfolge.
+Für die erstmalige Einrichtung bitte der Datei [`install.md`](install.md) folgen. Sie enthält die vorgesehenen Installationsschritte und die dazugehörigen Befehle in der richtigen Reihenfolge.
 
 Grob umfasst die Installation folgende Schritte:
 
