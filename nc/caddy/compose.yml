@@ -26,10 +26,6 @@ services:
       - /docker/nc/caddy/config:/config/caddy
       - /docker/nc/nextcloud/html:/var/www/nextcloud:ro
 
-#    dns:
-#      - 1.1.1.1
-#      - 8.8.8.8
-
     restart: unless-stopped
 
 networks:
