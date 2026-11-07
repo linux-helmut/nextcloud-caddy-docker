@@ -1,10 +1,10 @@
 # Nextcloud Caddy Docker
 
-[![Latest Release](https://img.shields.io/github/v/release/linux-helmut/nextcloud-caddy-docker?display_name=tag&style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/latest)   MariaDB 12.3, PHP 8.5
+[![Release](https://img.shields.io/badge/release-v1.2.0-blue?style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/tag/v1.2.0)   MariaDB 12.3, PHP 8.5
 
-[![Latest Release](https://img.shields.io/github/v/release/linux-helmut/nextcloud-caddy-docker?display_name=tag&style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/latest)   MariaDB 12.3, PHP 8.4
+[![Release](https://img.shields.io/badge/release-v1.1.0-blue?style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/tag/v1.1.0)   MariaDB 12.3, PHP 8.4
 
-[![Latest Release](https://img.shields.io/github/v/release/linux-helmut/nextcloud-caddy-docker?display_name=tag&style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/latest)   MariaDB 11.8, PHP 8.4
+[![Release](https://img.shields.io/badge/release-v1.0.0-blue?style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/tag/v1.0.0)   MariaDB 11.8, PHP 8.4
 
 Eine modulare, selbst betriebene Nextcloud-Umgebung auf Basis von Docker, PHP-FPM, MariaDB, Redis und Caddy.
 
