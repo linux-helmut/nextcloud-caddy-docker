@@ -2,7 +2,7 @@
 
 Eine modulare, selbst betriebene Nextcloud-Umgebung auf Basis von Docker, PHP-FPM, MariaDB, Redis und Caddy.
 
-Das Projekt ist so aufgebaut, dass die einzelnen Dienste unabhängig voneinander betrieben und gewartet werden können. Jeder Dienst besitzt eine eigene Docker-Compose-Konfiguration sowie eigene Skripte zum Starten, Neustarten und Aktualisieren. Die erstmalige Einrichtung ist separat in [`install.txt`](install.txt) beschrieben.
+Das Projekt ist so aufgebaut, dass die einzelnen Dienste unabhängig voneinander betrieben und gewartet werden können. Jeder Dienst besitzt eine eigene Docker-Compose-Konfiguration sowie eigene Skripte zum Starten, Neustarten und Aktualisieren. Die erstmalige Einrichtung ist separat in [`install.md`](install.md) beschrieben.
 
 **Die mitgelieferte Beispielkonfiguration ist auf lokale Nutzung ausgelegt.** Über die zentrale Datei `nc/config.env` lässt sich Caddy mit `CADDY_TLS` wahlweise für interne oder öffentliche TLS-Zertifikate konfigurieren. Das Projekt kann mit passenden Domains und DNS-Einträgen auch öffentlich betrieben werden.
 
