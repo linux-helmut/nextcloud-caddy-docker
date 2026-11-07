@@ -12,7 +12,11 @@ services:
 
     networks:
       nc_cloud:
-
+      
+    dns:
+      - ${DOCKER_DNS_IPV4}
+      - ${DOCKER_DNS_IPV6}
+      
     restart: unless-stopped
 
 networks:
