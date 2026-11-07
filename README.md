@@ -108,9 +108,10 @@ Es reicht nicht aus, nur die DNS-Einträge zu ändern. Die Domains müssen in `c
 - Administrative Rechte auf dem Host
 - Ausreichend Speicherplatz für Datenbank, Nextcloud-Dateien und Dienstdaten
 
-Für die lokale Nutzung muss ein konfigurierbarer lokaler DNS-Server vorhanden sein.
-Der Docker Host, sowie die Docker Container, müssen für eine interne Verwendung in der Lage sein die Domains cloud.lokal.de und office.lokal.de zur IPv4/IPv6 des Docker Host aufzulösen. Selbes gilt für alle Clients, welche auf xxx.lokal.de zugreifen wollen.
-Für den externen Zugriff werden öffentliche DNS-Einträge und die Erreichbarkeit der erforderlichen Ports benötigt.
+Für den lokalen Betrieb ist ein konfigurierbarer lokaler DNS-Server erforderlich.
+Der Docker-Host und alle Docker-Container müssen die Domains cloud.lokal.de und office.lokal.de auf die IPv4- und IPv6-Adressen des Docker-Hosts auflösen können.
+Dasselbe gilt für alle Clients, die auf die entsprechenden Domains zugreifen sollen.
+Für den externen Zugriff sind öffentliche DNS-Einträge sowie die Erreichbarkeit der erforderlichen Ports notwendig.
 
 Die Installation von Debian und Docker selbst ist nicht Bestandteil dieses Projekts.
 
