@@ -296,6 +296,24 @@ Die Beispieldatei `autoconfig.php` enthält Datenbank- und Administratorangaben 
 
 PHP-FPM und der Nextcloud-Anwendungscode werden getrennt aktualisiert. Ein Neubau des PHP-FPM-Images aktualisiert nicht automatisch den Nextcloud-Anwendungscode. Umgekehrt ersetzt ein Nextcloud-Anwendungsupdate nicht die PHP-Laufzeitumgebung.
 
+#### Nextcloud-Hintergrundaufgaben (Cron)
+
+Die regelmäßige Ausführung der Nextcloud-Hintergrundaufgaben erfolgt über den Cron-Dienst des Docker-Hosts.
+
+Dazu muss auf dem Host ein Cronjob eingerichtet werden, der alle fünf Minuten `cron.php` im Nextcloud-Container ausführt.
+
+Beispiel für `/etc/cron.d/nextcloud`:
+
+```cron
+*/5 * * * * root docker exec -u www-data nc_cloud php /var/www/nextcloud/cron.php
+```
+
+Der Cronjob wird auf dem Docker-Host ausgeführt, nicht innerhalb des Containers.
+
+Voraussetzung ist, dass der Cron-Dienst auf dem Host installiert und aktiv ist.
+
+
+
 ### Caddy
 
 Verzeichnis: `nc/caddy/`
