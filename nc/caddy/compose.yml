@@ -11,6 +11,10 @@ services:
         aliases:
           - ${NC_DOMAIN}
 
+    dns:
+      - ${DOCKER_DNS_IPV4}
+      - ${DOCKER_DNS_IPV6}
+
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
