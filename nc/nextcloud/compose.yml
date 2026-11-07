@@ -12,7 +12,11 @@ services:
 
     networks:
       nc_cloud:
-
+      
+    dns:
+      - ${DOCKER_DNS_IPV4}
+      - ${DOCKER_DNS_IPV6}
+      
     environment:
       PUID: "1000"
       PGID: "1000"
