@@ -14,5 +14,5 @@ else
     echo "notify_push nicht vorhanden"
 fi
 
-exec php-fpm8.4 -F
+exec php-fpm8.5 -F
 
