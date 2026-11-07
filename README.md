@@ -4,6 +4,11 @@
 
 [![License: PolyForm Noncommercial](https://img.shields.io/badge/License-PolyForm_Noncommercial-blue?style=flat-square)](LICENSE)
 
+[![Release](https://img.shields.io/github/v/release/linux-helmut/nextcloud-caddy-docker?display_name=tag&style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/latest)
+![MariaDB](https://img.shields.io/badge/MariaDB-12.3-blue?style=flat-square)
+![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?style=flat-square)
+
+
 Eine modulare, selbst betriebene Nextcloud-Umgebung auf Basis von Docker, PHP-FPM, MariaDB, Redis und Caddy.
 
 Das Projekt stellt eine vorbereitete Struktur und Skripte bereit, um eine eigene Nextcloud-Umgebung einzurichten. Es ist bewusst als **Installations- und Bereitstellungsgrundlage** konzipiert und nicht als Verwaltungsplattform für den laufenden Betrieb.
