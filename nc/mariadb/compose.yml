@@ -1,6 +1,6 @@
 services:
   nc_mariadb:
-    image: mariadb:11.8
+    image: mariadb:12.3
     container_name: nc_mariadb
 
     command:
