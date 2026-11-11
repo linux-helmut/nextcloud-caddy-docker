@@ -1,5 +1,13 @@
 # Nextcloud Caddy Docker
 
+[![Release](https://img.shields.io/badge/release-v1.2.0-blue?style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/tag/v1.2.0)   MariaDB 12.3, PHP 8.5, Nextcloud latest, Caddy latest, Redis latest
+
+[![Release](https://img.shields.io/badge/release-v1.1.0-blue?style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/tag/v1.1.0)   MariaDB 12.3, PHP 8.4, Nextcloud latest, Caddy latest, Redis latest
+
+[![Release](https://img.shields.io/badge/release-v1.0.0-blue?style=flat-square)](https://github.com/linux-helmut/nextcloud-caddy-docker/releases/tag/v1.0.0)   MariaDB 11.8, PHP 8.4, Nextcloud latest, Caddy latest, Redis latest
+
+
+
 Eine modulare, selbst betriebene Nextcloud-Umgebung auf Basis von Docker, PHP-FPM, MariaDB, Redis und Caddy.
 
 Das Projekt stellt eine vorbereitete Struktur und Skripte bereit, um eine eigene Nextcloud-Umgebung einzurichten. Es ist bewusst als **Installations- und Bereitstellungsgrundlage** konzipiert und nicht als Verwaltungsplattform für den laufenden Betrieb.
