@@ -44,8 +44,6 @@ expire_logs_days = 10
 query_cache_type = 0
 query_cache_size = 0
 
-performance_schema = OFF
-
 table_open_cache = 2000
 table_definition_cache = 1000
 
