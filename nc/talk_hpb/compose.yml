@@ -1,0 +1,28 @@
+name: talk_hpb
+
+services:
+  talk_hpb:
+    container_name: talk_hpb
+    image: ghcr.io/nextcloud-releases/aio-talk:latest
+    init: true
+    restart: unless-stopped
+
+    networks:
+      - cloud
+
+    ports:
+      - "3478:3478/tcp"
+      - "3478:3478/udp"
+
+    environment:
+      - NC_DOMAIN=cloud.lokal.de
+      - TALK_HOST=talk.lokal.de
+      - TURN_SECRET=1234567890123456789012345678901234567890
+      - SIGNALING_SECRET=1234567890123456789012345678901234567890
+      - TZ=Europe/Berlin
+      - TALK_PORT=3478
+      - INTERNAL_SECRET=1234567890123456789012345678901234567890
+
+networks:
+  cloud:
+    external: true
