@@ -53,3 +53,7 @@
         encode gzip zstd
         reverse_proxy nc_euro-office:80
 }
+
+{$TALK_DOMAIN} {
+        reverse_proxy talk_hpb:8081
+}
